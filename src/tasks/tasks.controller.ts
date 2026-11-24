@@ -7,25 +7,20 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { Task } from './schemas/task.schema';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
 export class TasksController {
-  private readonly tasksMemory: Task[] = [];
-
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  async create(@Body() dto: CreateTaskDto) {
-    const createdTask = await this.tasksService.create(dto);
-    this.tasksMemory.push(createdTask);
-    return createdTask;
+  create(@Body() dto: CreateTaskDto) {
+    return this.tasksService.create(dto);
   }
 
   @Get()
   findAll() {
-    return this.tasksMemory;
+    return this.tasksService.findAll();
   }
 
   @Get('priority/:id')
